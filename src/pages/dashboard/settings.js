@@ -4,7 +4,7 @@ import { useMe } from '@/lib/me';
 import Tab from '@/components/tab/tab';
 import AccessDenied from '@/components/auth/AccessDenied';
 
-const Dashboard = () => {
+const Setting = () => {
     const { data, error, loading } = useMe();
 
     const { data: session } = useSession();
@@ -18,11 +18,11 @@ const Dashboard = () => {
             <div className='max-w-4xl flex flex-col justify-center items-center gap-10'>
                 <Tab />
                 <div>
-                    Dashboard
+                    Settings
                 </div>
             </div>
         </div>
     )
 }
 
-export default Dashboard
+export default Setting

@@ -14,13 +14,12 @@ const authOptions = {
                 username: { label: "Username", type: "text" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials, req, res) {
+            async authorize(credentials) {
 
                 const user = await prisma.user.findUnique({
                     where: {
                         username: credentials.username
                     }
-
                 })
                 if (!user) {
                     throw new Error('No user found')
@@ -37,11 +36,8 @@ const authOptions = {
     ],
     pages: {
         signIn: '/auth/login',
-        // signOut: '/auth/signout',
-        // error: '/auth/error', // Error code passed in query string as ?error=
-        // verifyRequest: '/auth/verify-request', // (used for check email message)
         newUser: '/auth/welcome' // New users will be directed here on first sign in (leave the property out if not of interest)
-    }
+    },
 }
 
 export default NextAuth(authOptions)

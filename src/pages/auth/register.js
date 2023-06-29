@@ -1,5 +1,5 @@
 import React from 'react'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, MoveRight } from 'lucide-react'
 import { useForm } from "react-hook-form"
 import { signIn } from "next-auth/react"
 import { toast } from 'react-hot-toast'
@@ -58,9 +58,9 @@ const Register = () => {
     }
 
     return (
-        <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-lg text-center">
-                <h1 className="text-2xl font-bold sm:text-3xl">Register to Get started Bidding! 🎉</h1>
+        <div className=" max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 mx-auto my-0">
+            <div className="mx-auto max-w-lg text-center animate-text-shimmer bg-clip-text text-transparent bg-[linear-gradient(110deg,#e2e8f0,45%,#1e293b,55%,#e2e8f0)] bg-[length:250%_100%]">
+                <h1 className="text-2xl font-bold">Register to Get Started !</h1>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
@@ -144,15 +144,22 @@ const Register = () => {
                     <p className="text-sm text-gray-500">
                         Already have an Account? {''}
                         <Link className="
-                        font-medium text-blue-600 hover:text-blue-500
+                        font-medium text-slate-300 hover:text-white
                         " href="/auth/login">Log In</Link>
                     </p>
 
                     <button
                         type="submit"
-                        className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+                        className="group relative inline-flex items-center overflow-hidden rounded border border-current px-8 py-3 text-white focus:outline-none focus:ring active:text-white"
+
                     >
-                        Register
+                        <span className="absolute -end-full transition-all group-hover:end-4">
+                            <MoveRight className="h-4 w-4 text-white-600" />
+                        </span>
+
+                        <span className="text-sm font-medium transition-all group-hover:me-4">
+                            Register
+                        </span>
                     </button>
                 </div>
             </form>

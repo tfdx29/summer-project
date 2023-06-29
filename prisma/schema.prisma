@@ -9,12 +9,45 @@ datasource db {
 
 
 model User {
-  id       String     @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String?
   username  String   @unique
   email     String   @unique
   password  String
   admin     Boolean  @default(false)
+  items     Item[]
+  itemBids  ItemBid[]
+  winningBids Item[]    @relation("WinningBid")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Item {
+  id                String      @id @default(uuid())
+  name              String
+  image             String
+  description       String
+  startingPrice     Int
+  finalPrice        Int
+  userId            String
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bids              ItemBid[]
+  auctionStart      DateTime
+  auctionEnd        DateTime
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  winnerId          String?
+  winner            User?       @relation("WinningBid", fields: [winnerId], references: [id])
+}
+
+
+
+model ItemBid {
+  id        String     @id @default(uuid())
+  item      Item       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
