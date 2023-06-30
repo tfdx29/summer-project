@@ -21,7 +21,7 @@ const New = () => {
                 <Tab />
                 {data?.admin === true ? (
                     <div>
-                        <FormFiller />
+                        <FormFiller data={data} />
                     </div>
                 ) : <p>You Are Not Authorized </p>}
             </div>

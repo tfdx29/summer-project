@@ -5,43 +5,62 @@ import { useSession } from 'next-auth/react';
 
 const Auctions = () => {
     const { data, loading, error } = useMe();
+    const [items, setItems] = useState([]);
     const { data: session } = useSession();
-    const [visibleCards, setVisibleCards] = useState(10);
-    const totalCards = 16;
-    const cardsPerLoad = 10;
+    // const [visibleCards, setVisibleCards] = useState(10);
+    // const totalCards = 16;
+    // const cardsPerLoad = 10;
 
-    const handleShowMore = () => {
-        setVisibleCards(prevVisibleCards => prevVisibleCards + cardsPerLoad);
-    };
+    // const handleShowMore = () => {
+    //     setVisibleCards(prevVisibleCards => prevVisibleCards + cardsPerLoad);
+    // };
 
-    const showMoreButton = visibleCards < totalCards ? (
-        <button
-            className="btn-show-more"
-            onClick={handleShowMore}
-        >
-            Show More
-        </button>
-    ) : (
-        <h1>
-            Nothing To Show
-        </h1>
-    );
+    // const showMoreButton = visibleCards < totalCards ? (
+    //     <button
+    //         className="btn-show-more"
+    //         onClick={handleShowMore}
+    //     >
+    //         Show More
+    //     </button>
+    // ) : (
+    //     <h1>
+    //         Nothing To Show
+    //     </h1>
+    // );
+
+    React.useEffect(() => {
+        const itesm = fetch('/api/auction/items')
+            .then(res => res.json())
+            .then(data => setItems(data))
+    }, [])
 
     return (
         <div className="px-4 py-16 sm:px-6">
             <div className="mx-auto max-w-lg text-center flex items-center gap-3 justify-center">
-                <h1 className="text-2xl font-bold">All Available Auctions 🎉</h1>
+                <h1 className="text-2xl font-bold">{items.length > 0 ? 'All Available Auctions 🎉' : 'No Auctions Available 🚧'}</h1>
             </div>
             <div className="flex justify-center items-center flex-wrap gap-5 mt-10">
-                {Array(visibleCards).fill(0).map((_, i) => (
+                {items.map((i) => (
+                    <Card
+                        key={i}
+                        image={i.image}
+                        buttonText={'Bid'}
+                        name={i.name}
+                        price={i.startingPrice}
+                        status={''}
+                        editable={session && data?.admin === true}
+                        auctionStart={i.auctionStart}
+                    />
+                ))}
+                {/* {Array(visibleCards).fill(0).map((_, i) => (
                     <Card key={i} image={''} buttonText={'Bid'} status={''} editable={
                         session && data?.admin === true
                     } />
-                ))}
+                ))} */}
             </div>
-            <div className="flex justify-center mt-5">
+            {/* <div className="flex justify-center mt-5">
                 {showMoreButton}
-            </div>
+            </div> */}
         </div>
     );
 };

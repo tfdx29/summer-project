@@ -5,8 +5,9 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
+  
 }
-
 
 model User {
   id        String     @id @default(uuid())
@@ -20,6 +21,9 @@ model User {
   winningBids Item[]    @relation("WinningBid")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([username]) // Add an index for the username field
+  @@index([email])    // Add an index for the email field
 }
 
 model Item {
@@ -38,9 +42,10 @@ model Item {
   updatedAt         DateTime    @updatedAt
   winnerId          String?
   winner            User?       @relation("WinningBid", fields: [winnerId], references: [id])
+
+  @@index([userId])  // Add an index for the userId field
+  @@index([winnerId])  // Add an index for the winnerId field
 }
-
-
 
 model ItemBid {
   id        String     @id @default(uuid())
@@ -50,4 +55,53 @@ model ItemBid {
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([itemId])  // Add an index for the itemId field
+  @@index([userId])  // Add an index for the userId field
 }
+
+
+
+// model User {
+//   id        String     @id @default(uuid())
+//   name      String?
+//   username  String   @unique
+//   email     String   @unique
+//   password  String
+//   admin     Boolean  @default(false)
+//   items     Item[]
+//   itemBids  ItemBid[]
+//   winningBids Item[]    @relation("WinningBid")
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model Item {
+//   id                String      @id @default(uuid())
+//   name              String
+//   image             String
+//   description       String
+//   startingPrice     Int
+//   finalPrice        Int
+//   userId            String
+//   user              User        @relation(fields: [userId], references: [id] )
+//   bids              ItemBid[]
+//   auctionStart      DateTime
+//   auctionEnd        DateTime
+//   createdAt         DateTime    @default(now())
+//   updatedAt         DateTime    @updatedAt
+//   winnerId          String?
+//   winner            User?       @relation("WinningBid", fields: [winnerId], references: [id])
+// }
+
+
+
+// model ItemBid {
+//   id        String     @id @default(uuid())
+//   item      Item       @relation(fields: [itemId], references: [id])
+//   itemId    String
+//   user      User       @relation(fields: [userId], references: [id] )
+//   userId    String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }

@@ -2,8 +2,9 @@ import React from 'react'
 import * as Form from '@radix-ui/react-form';
 import { useForm } from "react-hook-form"
 import { MoveRight } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
-const FormFiller = () => {
+const FormFiller = ({ data: session }) => {
   const {
     register,
     handleSubmit,
@@ -11,12 +12,23 @@ const FormFiller = () => {
     reset
   } = useForm()
   const onSubmit = async (data) => {
+    const send = {
+      data: data,
+      session: session
+    }
     const res = await fetch('/api/auction/new', {
       method: 'POST',
-      body: JSON.stringify(data)
+      headers: {
+        'Content-Type': 'application/json'
 
+      },
+      body: JSON.stringify(send)
     })
-    console.log(res);
+    const json = await res.json()
+    if (!res.ok) throw Error(json.message)
+    reset()
+    toast.success('Item Created')
+
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full mb-0 mt-8 max-w-xl space-y-4">

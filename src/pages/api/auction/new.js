@@ -2,17 +2,17 @@ import prisma from "@/lib/prisma";
 import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
-    const { name, description, price, image, auctionStart, auctionEnd } = req.body;
+    const { data, session } = req.body;
 
-    const session = await getSession({ req });
 
     if (!session) {
         return res.status(401).json({ message: 'You must be logged in' });
     }
 
+
     const me = await prisma.user.findUnique({
         where: {
-            email: session.user.email,
+            email: session.email,
         },
     });
 
@@ -22,13 +22,13 @@ export default async function handler(req, res) {
 
     const newItem = await prisma.item.create({
         data: {
-            name,
-            description,
-            startingPrice: parseInt(price),
-            finalPrice: parseInt(price),
-            image,
-            auctionStart: new Date(auctionStart),
-            auctionEnd: new Date(auctionEnd),
+            name: data.name,
+            description: data.description,
+            startingPrice: parseInt(data.price),
+            finalPrice: parseInt(data.price),
+            image: data.image,
+            auctionStart: new Date(data.auctionStart),
+            auctionEnd: new Date(data.auctionEnd),
             userId: me.id,
         },
     });

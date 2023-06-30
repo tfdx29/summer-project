@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { NavItem, SiteConfig } from '@/lib/nav'
-import { LogOut, X } from 'lucide-react'
+import { LogOut, User, X } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import * as Dialog from '@radix-ui/react-dialog';
@@ -33,8 +33,10 @@ const NavBar = ({ session, signOut }) => {
                     </div>
 
                     {session ? (
-                        <div className='flex items-center gap-2'>
-                            Hello {session.user.name}{' '}
+                        <div className='flex items-center gap-4'>
+                            <Link href={'/dashboard'} className='text-white transition hover:text-slate-300/75 font-bold'>
+                                <User className='h-6 w-6' />
+                            </Link>
                             <AlertDialogue title={'Do You Want to Logout ?'} icon={<LogOut className='h-6 w-6' />} />
                         </div>
 
